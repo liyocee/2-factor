@@ -1,4 +1,3 @@
-# Backend Two Factor API
-==========================
-
-Houses API for two factor functionality
+# 2-Factor API Server
+======================
+API Server exposing API for doing 2-Factor authentication
