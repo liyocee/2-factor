@@ -1,3 +1,3 @@
-# Frontent Web Client
-======================
-Houses Frontend Client for testing driving two Factor API
+# 2-Factor UI
+==========================
+Frontend for 2-Factor API
