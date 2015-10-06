@@ -21,6 +21,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django_otp.middleware.OTPMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
@@ -31,10 +32,11 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 ALLOWED_HOSTS = ['.2-factor.co.ke', '.localhost', '.emanager.co']
 INSTALLED_APPS = (
+
+    'django.contrib.sites',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
-    'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.admin',
@@ -55,11 +57,14 @@ INSTALLED_APPS = (
     'rest_auth.registration',
     'allauth',
     'allauth.account',
+    'django_otp',
+    'two_factor',
+    'huey.djhuey'
 
 )
 LOCAL_APPS = (
-    'common',
     'api',
+    'common',
     'users',
 )
 INSTALLED_APPS = LOCAL_APPS + INSTALLED_APPS
@@ -137,7 +142,7 @@ REST_FRAMEWORK = {
         'rest_framework.throttling.ScopedRateThrottle',
     ),
     'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',
+        'users.permissions.TwoFactorIsVerified',
     ),
     'DEFAULT_FILTER_BACKENDS': (
         'rest_framework.filters.DjangoFilterBackend',
@@ -187,9 +192,7 @@ TEMPLATES = [
         },
     },
 ]
-# django-allauth related settings
-# some of these settings take into account that the target audience
-# of this system is not super-savvy
+
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
@@ -227,3 +230,24 @@ MANDRILL_API_KEY = ''
 EMAIL_BACKEND = 'djrill.mail.backends.djrill.DjrillBackend'
 REDIS_HOST = 'localhost'
 REDIS_PORT = 6379
+TASKS_LOG_FILE = 'error_logs.logs'
+HUEY = {
+    'backend': 'huey.backends.redis_backend',
+    'name': 'two_factors_task_queue',
+    'connection': {'host': REDIS_HOST, 'port': REDIS_PORT},
+    'always_eager': False,
+    'consumer_options': {'workers': 4, 'logfile': TASKS_LOG_FILE},
+}
+REDIS_HOST = 'localhost'
+REDIS_PORT = 6379
+
+# two_factor settings
+TWO_FACTOR_SMS_GATEWAY = 'two_factor.gateways.twilio.gateway.Twilio'
+# TWO_FACTOR_SMS_GATEWAY = 'two_factor.gateways.fake.Fake'
+TWO_FACTOR_TOTP_DIGITS = 6
+
+# twilio settings
+TWILIO_ACCOUNT_SID = ''
+TWILIO_AUTH_TOKEN = ''
+TWILIO_CALLER_ID = ''
+EMAIL_VERIFY_UI_LINK = 'http://localhost:8012/users/verify'
