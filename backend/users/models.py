@@ -7,6 +7,7 @@ from django.contrib.auth.models import (
 from django.contrib.auth.models import make_password
 from django.db import models
 from django.utils import timezone
+from common.models import TwoFactorEmailDevice, TwoFactorPhoneDevice
 
 
 class MyUserManager(BaseUserManager):
@@ -16,7 +17,6 @@ class MyUserManager(BaseUserManager):
     """
     def create(self, email, first_name,
                password=None, **extra_fields):
-        # todo - add sms and email confirmation hook here
         now = timezone.now()
         validate_email(email)
         p = make_password(password)
@@ -25,6 +25,17 @@ class MyUserManager(BaseUserManager):
                           is_staff=False, is_active=True, is_superuser=False,
                           date_joined=now, **extra_fields)
         user.save(using=self._db)
+
+        # # add email device
+        # device = TwoFactorEmailDevice.objects.create(
+        #     user=user, name="Email Device")
+        # device.generate_challenge()
+
+        # add sms device
+        device = TwoFactorPhoneDevice.objects.create(
+            user=user, name="SMS Device", number=user.phone_number,
+            method="sms")
+        device.generate_challenge()
         return user
 
     def create_superuser(self, email, first_name,
@@ -45,17 +56,20 @@ class User(AbstractBaseUser):
     """
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     email = models.EmailField(max_length=40, unique=True)
+    phone_number = models.CharField(max_length=120, unique=True)
     first_name = models.CharField(max_length=30, blank=True)
     last_name = models.CharField(max_length=30, blank=True)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     date_joined = models.DateTimeField(default=timezone.now)
     is_superuser = models.BooleanField(default=False)
+    is_email_verified = models.BooleanField(default=False)
+    is_phone_verified = models.BooleanField(default=False)
 
     objects = MyUserManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name', 'last_name']
+    REQUIRED_FIELDS = ['first_name', 'last_name', 'phone_number']
 
     def get_short_name(self):
         "Returns the short name for the user."
