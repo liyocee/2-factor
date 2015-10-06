@@ -86,6 +86,10 @@ setup(
         "django-extensions==1.5.2",
         "huey==0.4.8",
         "redis==2.10.3",
-        "django_hstore>=1.3.0"
+        "django-otp>=0.3",
+        "django-two-factor-auth==1.2.0",
+        "twilio==3.6.8",
+        "django-formtools==1.0"
     ],
+
 )
