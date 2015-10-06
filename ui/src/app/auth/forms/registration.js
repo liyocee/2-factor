@@ -36,6 +36,17 @@
 
                 },
                 {
+                    key: "phone_number",
+                    type: "input",
+                    templateOptions: {
+                        placeholder: "Phone Number",
+                        type: "text",
+                        label: "Phone Number:",
+                        required:true
+                    }
+
+                },
+                {
                     key: "password",
                     type: "input",
                     templateOptions: {
