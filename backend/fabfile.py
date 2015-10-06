@@ -28,12 +28,11 @@ def reset_migrations():
         local('rm -rf {}/migrations/ -r'.format(app_name))
     for app_name in settings.LOCAL_APPS:
         manage('makemigrations {}'.format(app_name))
-    local('git add . --all')
+    # local('git add . --all')
 
 
 def clean_pyc():
-    for app_name in settings.LOCAL_APPS:
-        local('rm -rf {}/*.pyc '.format(app_name))
+    local("find . -name '*.pyc' -delete")
 
 
 def migrate():
@@ -58,7 +57,6 @@ def setup(*args, **kwargs):
     except:
         pass
     psql("CREATE DATABASE {}".format(db_name), no_sudo)
-    psql('CREATE EXTENSION IF NOT EXISTS hstore')
     if bootstrap_sql:
         psql(bootstrap_sql, no_sudo=no_sudo, is_file=True)
     else:
