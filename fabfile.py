@@ -34,7 +34,7 @@ def deploy_frontend():
 
 
 def deploy_backend():
-    with lcd(os.path.join(BASE_DIR, "backend")):
+    with lcd(os.path.join(BASE_DIR, "deployment/playbooks")):
         # tags = '--tags django.docs_user'
         tags = ''
         # task = "--start-at-task 'Setup the Git repo'"
