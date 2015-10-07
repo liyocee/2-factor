@@ -44,7 +44,9 @@ TASKS_LOG_FILE = os.getenv('TASKS_LOG_FILE')
 HUEY = {
     'backend': 'huey.backends.redis_backend',
     'name': 'two_factors_task_queue',
-    'connection': {'host': REDIS_HOST, 'port': REDIS_PORT},
+    'connection': {
+        'host': os.getenv("REDIS_HOST"), 'port': os.getenv("REDIS_PORT")
+    },
     'always_eager': False,
     'consumer_options': {'workers': 4, 'logfile': TASKS_LOG_FILE},
 }
