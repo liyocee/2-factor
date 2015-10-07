@@ -12,6 +12,9 @@ class LoginMixin(object):
             last_name='Test',
             password='tester'
         )
+        self.user.is_email_verified = True
+        self.user.is_phone_verified = True
+        self.user.save()
         login_url = settings.LOGIN_URL
         login_data = {
             'username': 'tester@2factor.co.ke', 'password': 'tester'
