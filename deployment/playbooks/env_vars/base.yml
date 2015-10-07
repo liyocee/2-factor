@@ -13,7 +13,7 @@ git_branch: master
 
 # Application settings.
 virtualenv_path: "/opt/{{ application_name }}"
-application_path: "{{ virtualenv_path }}/{{ project_name }}"
+application_path: "{{virtualenv_path}}/app"
 project_path: "{{ application_path }}/backend"
 application_log_dir: "{{ virtualenv_path }}/logs"
 application_log_file: "{{ application_log_dir }}/gunicorn_supervisor.log"
