@@ -71,7 +71,7 @@
                 vm.promise.then(
                     function(){
                         notification.success("Success", "Registration was successful");
-                        $state.go("login");
+                        $state.go("signup_msg");
                     },
                     function(error){
                         notification.error("Error", "An error occured");
