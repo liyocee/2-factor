@@ -33,18 +33,34 @@
             scope.login_promise = api.all("auth").all("login").post(data);
             scope.login_promise.then(
                 function(data){
+                    if(!data.user.is_email_verified){
+                        scope.alert = "Click on the verification link sent to you.";
+                        notification.error("Error", "Error logging in");
+                        return;
+                    }
                     var credz = {
                         token: data.key,
                         user: data.user
                     };
                     setCredentials(credz);
-                    $window.location.replace("/dashboard");
+                    // $window.location.replace("/dashboard");
+                    $state.go("token");
                     notification.success("Login", "Successfully logged in");
                 },
                 function(error){
                     scope.alert = "Invalid username/password combination";
                     notification.error("Error", "Error logging in");
                 });
+        };
+
+        var smsToken = function(token, scope){
+            console.log(token);
+            scope.alert = "Invalid Token";
+        };
+
+        var verifyEmail = function(token, userId, scope){
+            console.log(userId);
+            scope.alert = token + "Verified";
         };
         var logout = function(){
             storage.remove(storeKey);
@@ -69,7 +85,9 @@
             "login": login,
             "logout": logout,
             "getUser": getUser,
-            "register": register
+            "register": register,
+            "smsToken": smsToken,
+            "verifyEmail": verifyEmail
         };
     }])
     ;
