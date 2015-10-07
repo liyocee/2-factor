@@ -242,8 +242,8 @@ REDIS_HOST = 'localhost'
 REDIS_PORT = 6379
 
 # two_factor settings
-TWO_FACTOR_SMS_GATEWAY = 'two_factor.gateways.twilio.gateway.Twilio'
-# TWO_FACTOR_SMS_GATEWAY = 'two_factor.gateways.fake.Fake'
+# TWO_FACTOR_SMS_GATEWAY = 'two_factor.gateways.twilio.gateway.Twilio'
+TWO_FACTOR_SMS_GATEWAY = 'two_factor.gateways.fake.Fake'
 TWO_FACTOR_TOTP_DIGITS = 6
 
 # twilio settings
