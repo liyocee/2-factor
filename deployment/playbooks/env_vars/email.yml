@@ -1,4 +1,4 @@
 ---
 
 # Email Settings
-mandrill_api_key = 1
+mandrill_api_key: 1
