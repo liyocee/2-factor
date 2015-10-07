@@ -1,0 +1,12 @@
+---
+
+- name: Create the Supervisor background tasks file
+  template: src=supervisor_tasks_config.j2
+            dest=/etc/supervisor/conf.d/two_factor_tasks.conf
+            backup=no
+
+- name: Re-read the Supervisor config files
+  supervisorctl: name={{ two_factor_tasks }} state=present
+
+- name: Restart Supervisor
+  supervisorctl: name={{ two_factor_tasks }} state=restarted
