@@ -17,6 +17,7 @@ application_path: "{{virtualenv_path}}/app"
 project_path: "{{ application_path }}/backend"
 application_log_dir: "{{ virtualenv_path }}/logs"
 application_log_file: "{{ application_log_dir }}/gunicorn_supervisor.log"
-two_factor_tasks_log_file: "{{ application_log_dir }}/two_factor_tasks_log_file.log"
+two_factor_tasks_log_file: "{{ application_log_dir }}/tasks_superviosr_log_file.log"
 requirements_file: "{{ project_path }}/requirements.txt"
+tasks_log_file: "{{ application_log_dir }}/tasks_log_file.log"
 

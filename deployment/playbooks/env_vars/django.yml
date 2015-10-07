@@ -25,3 +25,4 @@ django_environment:
   TWILIO_CALLER_ID: "{{ twilio_caller_id }}"
   MANDRILL_API_KEY: "{{ mandrill_api_key }}"
   FRONTEND_DOMAIN: "http://{{ frontend_domain }}"
+  TASKS_LOG_FILE: "{{ tasks_log_file }}"

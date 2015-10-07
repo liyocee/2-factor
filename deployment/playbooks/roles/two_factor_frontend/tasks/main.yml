@@ -39,6 +39,13 @@
   tags: two_factor_frontend
 
 
+- name: Ensure that the default site is disabled
+  command: rm /etc/nginx/sites-enabled/default
+           removes=/etc/nginx/sites-enabled/default
+  notify: reload nginx
+  tags: two_factor_frontend
+
+
 - name: set nginx sites-available
   template: >
     src=two_factor_frontend.nginx.conf
