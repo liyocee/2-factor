@@ -73,3 +73,4 @@ uploads/business/*
 # Sphinx documentation
 docs/_build/
 */docs/_build/
+secrets.txt
