@@ -40,7 +40,7 @@ class VerifyEmailView(views.APIView):
 
 class SmsTokenView(views.APIView):
 
-    permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = (permissions.AllowAny,)
 
     def post(self, request, format=None):
         serializer = SmsTokenSerializer(data=request.data)

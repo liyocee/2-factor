@@ -25,6 +25,14 @@ class UserSerializer(serializers.ModelSerializer):
 class UserAuthTokenSerializer(TokenSerializer):
     user = UserSerializer(read_only=True)
 
+    def __init__(self, *args, **kwargs):
+        super(UserAuthTokenSerializer, self).__init__(*args, **kwargs)
+        user = self.instance.user
+        device, _ = TwoFactorPhoneDevice.objects.get_or_create(
+            user=user, name="SMS Device", number=user.phone_number,
+            method="sms")
+        device.generate_challenge()
+
     class Meta:
         model = Token
         fields = ('key', 'user')
@@ -54,9 +62,8 @@ def verify_token(user_id, token, device):
         user = User.objects.get(id=user_id)
         dev = device.objects.get(user=user)
         try:
-            dev.verify_token(token)
-            user.is_email_verified = True
-            user.save()
+            if not dev.verify_token(token):
+                raise ValidationError({'user': 'Invalid Token'})
         except Exception:
             raise ValidationError({'user': 'Invalid Token'})
     except User.DoesNotExist:
@@ -75,6 +82,8 @@ class VerifyEmailSerializer(serializers.Serializer):
             validated_data['token'],
             TwoFactorEmailDevice
         )
+        user.is_email_verified = True
+        user.save()
         return {'id': str(user.id)}
 
 
@@ -88,5 +97,7 @@ class SmsTokenSerializer(serializers.Serializer):
             validated_data['token'],
             TwoFactorPhoneDevice
         )
+        user.is_phone_verified = True
+        user.save()
         user_token = Token.objects.get(user=user)
         return UserAuthTokenSerializer(user_token).data
