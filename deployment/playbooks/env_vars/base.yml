@@ -1,0 +1,21 @@
+---
+
+git_repo: git@github.com:liyocee/2-factor.git
+git_repo_key_file: /home/ubuntu/.ssh/id_rsa
+
+project_name: two_factor
+application_name: two_factor
+
+
+# Git settings.
+setup_git_repo: yes
+git_branch: master
+
+# Application settings.
+virtualenv_path: "/opt/{{ application_name }}"
+application_path: "{{ virtualenv_path }}/{{ project_name }}"
+project_path: "{{ application_path }}/backend"
+application_log_dir: "{{ virtualenv_path }}/logs"
+application_log_file: "{{ application_log_dir }}/gunicorn_supervisor.log"
+requirements_file: "{{ project_path }}/requirements.txt"
+

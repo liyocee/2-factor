@@ -1,0 +1,7 @@
+# production hosts file
+
+[two-factor-api]
+52.89.255.53 ansible_ssh_user=ubuntu  ansible_ssh_private_key_file=~/.ssh/aws_inklibs.pem
+
+[two-factor-ui]
+52.11.129.38 ansible_ssh_user=ubuntu  ansible_ssh_private_key_file=~/.ssh/aws_inklibs.pem

@@ -1,0 +1,43 @@
+---
+
+- name: Setup 2-Factor Plarform
+  hosts: two-factor-api
+  sudo: yes
+  sudo_user: root
+  remote_user: root
+  vars:
+    - server_base_domain: "beyonic-api.healthix.co.ke"
+    - api_port: 8000
+    - server_port: "{{api_port}}"
+    - api_domain: "{{server_base_domain}}"
+    - frontend_domain: "beyonic.healthix.co.ke"
+    - ssh_port: 22
+    - ssl_on: false
+    - update_apt_cache: yes
+  vars_files:
+    - env_vars/base.yml
+    - env_vars/db.yml
+    - env_vars/twilio.yml
+    - env_vars/email.yml
+    - env_vars/django.yml
+    - env_vars/gunicorn.yml
+    - env_vars/nginx.yml
+    - env_vars/ssl.yml
+  tags: ["two_factor"]
+  roles:
+    - {
+        role: base,
+        new_installation: false
+    }
+    - {
+        role: common,
+        new_installation: false
+    }
+    - db
+    - {
+        role: two_factor_api,
+        inklibs_version: "0.0.1a1",
+        server_name: "{{api_domain}}",
+        nginx_port: 80,
+        tags: ["two_factor_api"]
+    }

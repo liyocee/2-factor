@@ -1,0 +1,7 @@
+---
+
+# Twilio Settings
+
+twilio_account_sid = 1
+twilio_auth_token = 1
+twilio_caller_id = 1

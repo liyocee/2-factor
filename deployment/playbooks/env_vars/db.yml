@@ -1,0 +1,6 @@
+---
+
+# Database settings.
+db_user: _two_factor_user
+db_name: _two_factor_db
+db_password: _two_@factor_@passwd
