@@ -38,7 +38,7 @@
                 data: {pageTitle: "Member Login"}
             })
             .state("token", {
-                url: "/token",
+                url: "/token/:user",
                 views: {
                     "main-container": {
                         templateUrl: "auth/tpls/token.tpl.html",

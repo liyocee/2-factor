@@ -43,7 +43,7 @@
             vm.tokenFields = Form.getForm();
             vm.smsToken = function(token){
                 AuthService.smsToken(
-                    token, $scope);
+                    token, $stateParams.user, $scope);
             };
         }]
     )

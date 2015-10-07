@@ -38,14 +38,8 @@
                         notification.error("Error", "Error logging in");
                         return;
                     }
-                    var credz = {
-                        token: data.key,
-                        user: data.user
-                    };
-                    setCredentials(credz);
-                    // $window.location.replace("/dashboard");
-                    $state.go("token");
-                    notification.success("Login", "Successfully logged in");
+
+                    $state.go("token", {user: data.user.id});
                 },
                 function(error){
                     scope.alert = "Invalid username/password combination";
@@ -53,9 +47,25 @@
                 });
         };
 
-        var smsToken = function(token, scope){
-            console.log(token);
-            scope.alert = "Invalid Token";
+        var smsToken = function(token,userId, scope){
+            var data = {
+                "token": token.token,
+                "user": userId
+            };
+            scope.promise = api.all("user").all("sms_token").post(data);
+            scope.promise.then(function(data){
+                var credz = {
+                    token: data.key,
+                    user: data.user
+                };
+                setCredentials(credz);
+                notification.success("Login", "Successfully logged in");
+                $window.location.replace("/dashboard");
+            }, function(error){
+                console.log(error);
+                scope.alert = "Invalid Token";
+                notification.error("Error", error.data.user);
+            });
         };
 
         var verifyEmail = function(token, userId, scope){
