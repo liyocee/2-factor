@@ -1,5 +1,4 @@
 from django.core.urlresolvers import reverse
-from django.contrib.auth.models import Group
 from common.tests import LoginMixin
 from rest_framework.test import APITestCase
 from .models import User
@@ -10,7 +9,8 @@ class TestLogin(APITestCase):
         self.user = User.objects.create(
             email='user@test.com',
             first_name='System',
-            password='pass'
+            password='pass',
+            phone_number="+25412132343"
         )
         self.login_url = reverse("api:v1:rest_auth:rest_login")
         self.logout_url = reverse("api:v1:rest_auth:rest_logout")
@@ -31,7 +31,8 @@ class TestLogin(APITestCase):
         user = User.objects.create(
             email='user1@test.com',
             first_name='System',
-            password='pass'
+            password='pass',
+            phone_number="+25412132349"
         )
         user.is_active = False
         user.save()
@@ -52,7 +53,8 @@ class TestLogin(APITestCase):
         user = User.objects.create(
             email='user1@test.com',
             first_name='System',
-            password='pass'
+            password='pass',
+            phone_number="+25412132349"
         )
         user.is_active = False
         user.save()
@@ -86,14 +88,14 @@ class TestLogin(APITestCase):
 class TestUserViews(LoginMixin, APITestCase):
     def test_create_user(self):
         create_url = reverse('api:v1:users:create')
-        group = Group.objects.create(name="Test Group")
         post_data = {
-            "groups": [{"id": group.id, "name": "Test Group"}],
-            "email": "user@healthix.co.ke",
+            "email": "user@2factor.co.ke",
             "first_name": "Hakuna",
             "last_name": "Ruhusa",
             "other_names": "",
-            "password": "rubbishpass"
+            "password": "rubbishpass",
+            "phone_number": "+245323232"
+
         }
         response = self.client.post(create_url, post_data)
         self.assertEqual(201, response.status_code)
@@ -103,7 +105,8 @@ class TestUserViews(LoginMixin, APITestCase):
         user = User.objects.create(
             email='user@test.com',
             first_name='System',
-            password='pass'
+            password='pass',
+            phone_number="+25412132349"
         )
         update_url = reverse(
             'api:v1:users:user_detail', kwargs={'pk': user.id})

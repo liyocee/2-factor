@@ -7,4 +7,5 @@ class TwoFactorIsVerified(permissions.IsAuthenticated):
     """
     def has_permission(self, request, view):
         super(TwoFactorIsVerified, self).has_permission(request, view)
-        return request.user.is_verified()
+        user = request.user
+        return user.is_email_verified and user.is_phone_verified
