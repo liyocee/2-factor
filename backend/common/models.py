@@ -11,6 +11,20 @@ def get_default_key():
     return random_hex(20)
 
 
+def verify_generated_token(cls, token):
+    # local import to avoid circular import
+    from two_factor.utils import totp_digits
+    try:
+        token = int(token)
+    except ValueError:
+        return False
+
+    for drift in range(-100, 100):  # bigger range for emails
+        if totp(cls.bin_key, drift=drift, digits=totp_digits()) == token:
+            return True
+    return False
+
+
 class TwoFactorPhoneDevice(PhoneDevice):
     """
         Override phone device
@@ -24,6 +38,9 @@ class TwoFactorPhoneDevice(PhoneDevice):
         no_digits = totp_digits()
         token = str(totp(self.bin_key, digits=no_digits)).zfill(no_digits)
         tasks.send_sms_task(self, token)
+
+    def verify_token(self, token):
+        return verify_generated_token(self, token)
 
     class Meta:
         app_label = 'common'
@@ -61,14 +78,4 @@ class TwoFactorEmailDevice(Device):
         return message
 
     def verify_token(self, token):
-        # local import to avoid circular import
-        from two_factor.utils import totp_digits
-        try:
-            token = int(token)
-        except ValueError:
-            return False
-
-        for drift in range(-100, 100):  # bigger range for emails
-            if totp(self.bin_key, drift=drift, digits=totp_digits()) == token:
-                return True
-        return False
+        return verify_generated_token(self, token)
