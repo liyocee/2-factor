@@ -34,3 +34,9 @@ SWAGGER_SETTINGS = {
     'info': SWAGGER_SETTINGS.get('info'),
     'doc_expansion': SWAGGER_SETTINGS.get('doc_expansion'),
 }
+MANDRILL_API_KEY = os.getenv('MANDRILL_API_KEY')
+TWO_FACTOR_SMS_GATEWAY = 'two_factor.gateways.twilio.gateway.Twilio'
+TWILIO_ACCOUNT_SID = os.getenv('TWILIO_ACCOUNT_SID')
+TWILIO_AUTH_TOKEN = os.getenv('TWILIO_AUTH_TOKEN')
+TWILIO_CALLER_ID = os.getenv('TWILIO_CALLER_ID')
+EMAIL_VERIFY_UI_LINK = os.getenv('FRONTEND_DOMAIN')+'/users/verify'
