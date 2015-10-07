@@ -59,8 +59,17 @@
         };
 
         var verifyEmail = function(token, userId, scope){
-            console.log(userId);
-            scope.alert = token + "Verified";
+            var data = {
+                "token": token,
+                "user": userId
+            };
+            scope.promise = api.all("user").all("verify_email").post(data);
+            scope.promise.then(function(data){
+                $state.go("login");
+            }, function(error){
+                console.log(error);
+            });
+
         };
         var logout = function(){
             storage.remove(storeKey);

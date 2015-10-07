@@ -25,7 +25,8 @@
                 url: "/verify_email/:token/:id",
                 views: {
                     "main-container": {
-                        controller: "2Factor.VerifyEmail.Controller as vm"
+                        controller: "2Factor.VerifyEmail.Controller as vm",
+                        templateUrl: "auth/tpls/verify_email.tpl.html"
                     },
                     "header@login": {
                         templateUrl: "common/tpls/sub_header.tpl.html"
