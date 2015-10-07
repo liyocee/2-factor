@@ -29,6 +29,24 @@
             };
         }]
     )
+    .controller("2Factor.VerifyEmail.Controller",
+        ["$scope","$stateParams", "2Factor.Auth.AuthService",
+        function ($scope,$stateParams, AuthService) {
+            AuthService.verifyEmail($stateParams.token, $stateParams.id, $scope);
+        }]
+    )
+    .controller("2Factor.Token.Controller",
+        ["$scope","$stateParams", "2Factor.Auth.AuthService", "2Factor.Form.Token",
+        function ($scope,$stateParams, AuthService, Form) {
+            var vm = this;
+            vm.token = {};
+            vm.tokenFields = Form.getForm();
+            vm.smsToken = function(token){
+                AuthService.smsToken(
+                    token, $scope);
+            };
+        }]
+    )
     .controller("2Factor.MemberRegistration.Controller",
         ["$scope","$state", "2Factor.Member.Form.Registration",
         "2Factor.Auth.AuthService", "2Factor.Notification",

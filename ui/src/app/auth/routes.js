@@ -21,6 +21,37 @@
                 },
                 data: {pageTitle: "Member Login"}
             })
+            .state("verify_email", {
+                url: "/verify_email/:token/:id",
+                views: {
+                    "main-container": {
+                        controller: "2Factor.VerifyEmail.Controller as vm"
+                    },
+                    "header@login": {
+                        templateUrl: "common/tpls/sub_header.tpl.html"
+                    },
+                    "error@login": {
+                        templateUrl: "common/tpls/error.tpl.html"
+                    }
+                },
+                data: {pageTitle: "Member Login"}
+            })
+            .state("token", {
+                url: "/token",
+                views: {
+                    "main-container": {
+                        templateUrl: "auth/tpls/token.tpl.html",
+                        controller: "2Factor.Token.Controller as vm"
+                    },
+                    "header@login": {
+                        templateUrl: "common/tpls/sub_header.tpl.html"
+                    },
+                    "error@login": {
+                        templateUrl: "common/tpls/error.tpl.html"
+                    }
+                },
+                data: {pageTitle: "Member Login"}
+            })
             .state("signup", {
                 url: "/signup",
                 views: {
