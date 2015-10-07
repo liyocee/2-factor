@@ -56,7 +56,8 @@ class User(AbstractBaseUser):
     """
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     email = models.EmailField(max_length=40, unique=True)
-    phone_number = models.CharField(max_length=120, unique=True)
+    phone_number = models.CharField(
+        max_length=120, unique=True, null=False, blank=False)
     first_name = models.CharField(max_length=30, blank=True)
     last_name = models.CharField(max_length=30, blank=True)
     is_staff = models.BooleanField(default=False)
