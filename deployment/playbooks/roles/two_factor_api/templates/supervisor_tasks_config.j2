@@ -1,4 +1,4 @@
-[program: two_factor_tasks]
+[program:two_factor_tasks]
 command = {{ virtualenv_path }}/bin/python {{ project_path }}/manage.py run_huey
 user = {{ gunicorn_user }}
 stdout_logfile = {{ two_factor_tasks_log_file }}
