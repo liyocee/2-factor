@@ -33,19 +33,19 @@
   file: path=/var/db/redis state=directory mode=0755 group=redis owner=redis
 
 - name: make sure redis.log file exists
-  template: src=templates/redis.log dest=/var/log/redis.log owner=redis group=redis mode=0644
+  template: src=redis.log dest=/var/log/redis.log owner=redis group=redis mode=0644
 
 - name: copy upstart file
-  template: src=templates/upstart.conf dest=/etc/init/redis.conf
+  template: src=upstart.conf dest=/etc/init/redis.conf
 
 - name: copy redis.conf file
-  template: src=templates/redis.conf dest=/etc/redis/redis.conf group=redis owner=redis
+  template: src=redis.conf dest=/etc/redis/redis.conf group=redis owner=redis
 
 - name: copy custom template
-  template: src=templates/redis.local.conf.j2 dest=/etc/redis/redis.local.conf group=redis owner=redis
+  template: src=redis.local.conf.j2 dest=/etc/redis/redis.local.conf group=redis owner=redis
 
 - name: copy redis-local script
-  template: src=templates/redis-local.j2 dest=/usr/local/bin/redis-local mode=0755
+  template: src=redis-local.j2 dest=/usr/local/bin/redis-local mode=0755
 
 - name: installing redis binaries
   command: cp /tmp/redis-stable/src/{{ item }} /usr/local/bin
