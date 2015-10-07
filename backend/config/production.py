@@ -41,3 +41,10 @@ TWILIO_AUTH_TOKEN = os.getenv('TWILIO_AUTH_TOKEN')
 TWILIO_CALLER_ID = os.getenv('TWILIO_CALLER_ID')
 EMAIL_VERIFY_UI_LINK = os.getenv('FRONTEND_DOMAIN')+'/users/verify'
 TASKS_LOG_FILE = os.getenv('TASKS_LOG_FILE')
+HUEY = {
+    'backend': 'huey.backends.redis_backend',
+    'name': 'two_factors_task_queue',
+    'connection': {'host': REDIS_HOST, 'port': REDIS_PORT},
+    'always_eager': False,
+    'consumer_options': {'workers': 4, 'logfile': TASKS_LOG_FILE},
+}
