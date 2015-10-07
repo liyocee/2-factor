@@ -19,6 +19,7 @@
     - env_vars/db.yml
     - env_vars/twilio.yml
     - env_vars/email.yml
+    - env_vars/redis.yml
     - env_vars/django.yml
     - env_vars/gunicorn.yml
     - env_vars/nginx.yml

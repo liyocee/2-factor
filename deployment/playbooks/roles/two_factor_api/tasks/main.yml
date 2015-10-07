@@ -11,6 +11,9 @@
 - include: setup_git_repo.yml
   tags: deploy
 
+- include: setup_redis.yml
+  tags: redis
+
 - include: setup_django_app.yml
   tags: deploy
 

@@ -1,0 +1,5 @@
+---
+
+# Redis Settings
+redis_port: 6379
+redis_port: localhost
