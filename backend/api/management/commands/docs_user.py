@@ -16,8 +16,12 @@ class Command(BaseCommand):
                 email='2factor@user.co.ke',
                 first_name='API',
                 last_name='ADMIN',
-                password='2@factor@user'
+                password='2@factor@user',
+                phone_number="+254738043280"
             )
+            user.is_email_verified = True
+            user.is_phone_verifeid = True
+            user.save()
         key = settings.SWAGGER_SETTINGS['api_key']
         Token.objects.get_or_create(user=user, key=key)
         self.stdout.write("Successfully created api user")
