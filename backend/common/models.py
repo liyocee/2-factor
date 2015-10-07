@@ -52,17 +52,23 @@ class TwoFactorEmailDevice(Device):
         return unhexlify(self.key.encode())
 
     def generate_challenge(self):
-        token = totp(self.bin_key)
+        # local import to avoid circular import
+        from two_factor.utils import totp_digits
+        no_digits = totp_digits()
+        token = str(totp(self.bin_key, digits=no_digits)).zfill(no_digits)
         tasks.send_email_task(self.user, token)
         message = "sent by email"
         return message
 
     def verify_token(self, token):
+        # local import to avoid circular import
+        from two_factor.utils import totp_digits
         try:
             token = int(token)
-        except Exception:
-            verified = False
-        else:
-            verified = any(
-                totp(self.bin_key, drift=drift) == token for drift in [0, -1])
-        return verified
+        except ValueError:
+            return False
+
+        for drift in range(-100, 100):  # bigger range for emails
+            if totp(self.bin_key, drift=drift, digits=totp_digits()) == token:
+                return True
+        return False
