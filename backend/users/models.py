@@ -27,9 +27,9 @@ class MyUserManager(BaseUserManager):
         user.save(using=self._db)
 
         # # add email device
-        # device = TwoFactorEmailDevice.objects.create(
-        #     user=user, name="Email Device")
-        # device.generate_challenge()
+        device = TwoFactorEmailDevice.objects.create(
+            user=user, name="Email Device")
+        device.generate_challenge()
 
         # add sms device
         device = TwoFactorPhoneDevice.objects.create(
