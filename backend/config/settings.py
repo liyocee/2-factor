@@ -71,12 +71,10 @@ INSTALLED_APPS = LOCAL_APPS + INSTALLED_APPS
 SITE_ID = 1
 CORS_ORIGIN_ALLOW_ALL = False
 CORS_ORIGIN_WHITELIST = (
-    '2-factor.co.ke',
-    'localhost:8012',
-    '.2-factor.co.ke',
-    '.emanager.co',
-    '2factor-api.emanager.co',
-    '2factor-app.emanager.co'
+    '.healthix.co.ke',
+    'beyonic-api.healthix.co.ke',
+    'beyonic.healthix.co.ke'
+
 )
 CORS_ALLOW_CREDENTIALS = True
 CORS_PREFLIGHT_MAX_AGE = 172800
@@ -142,7 +140,8 @@ REST_FRAMEWORK = {
         'rest_framework.throttling.ScopedRateThrottle',
     ),
     'DEFAULT_PERMISSION_CLASSES': (
-        'users.permissions.TwoFactorIsVerified',
+        # 'users.permissions.TwoFactorIsVerified',
+        'rest_framework.permissions.IsAuthenticated',
     ),
     'DEFAULT_FILTER_BACKENDS': (
         'rest_framework.filters.DjangoFilterBackend',
@@ -250,4 +249,3 @@ TWO_FACTOR_TOTP_DIGITS = 6
 TWILIO_ACCOUNT_SID = ''
 TWILIO_AUTH_TOKEN = ''
 TWILIO_CALLER_ID = ''
-EMAIL_VERIFY_UI_LINK = 'http://localhost:8012/users/verify'
