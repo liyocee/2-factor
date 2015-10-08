@@ -12,6 +12,9 @@ def get_default_key():
 
 
 def verify_generated_token(cls, token):
+    """
+        Verified generated tokens
+    """
     # local import to avoid circular import
     from two_factor.utils import totp_digits
     try:
@@ -25,19 +28,34 @@ def verify_generated_token(cls, token):
     return False
 
 
+def generate_challenge_token(cls):
+    """
+        Generates a token challenge delivered to a user
+        either via email or phone which is then verified.
+    """
+    # local import to avoid circular import
+    from two_factor.utils import totp_digits
+    no_digits = totp_digits()
+    token = str(totp(cls.bin_key, digits=no_digits)).zfill(no_digits)
+    return token
+
+
 class TwoFactorPhoneDevice(PhoneDevice):
     """
         Override phone device
     """
     def generate_challenge(self):
-        from two_factor.utils import totp_digits
-
         """
             Sends the current TOTP token to `self.number`
         """
-        no_digits = totp_digits()
-        token = str(totp(self.bin_key, digits=no_digits)).zfill(no_digits)
+        token = generate_challenge_token(self)
         tasks.send_sms_task(self, token)
+
+        """
+            Added this to also send token via email, Twilio test
+            account doesn't deliver messages to the phone.
+        """
+        tasks.send_token_via_email_task(self.user, token)
 
     def verify_token(self, token):
         return verify_generated_token(self, token)
@@ -69,10 +87,7 @@ class TwoFactorEmailDevice(Device):
         return unhexlify(self.key.encode())
 
     def generate_challenge(self):
-        # local import to avoid circular import
-        from two_factor.utils import totp_digits
-        no_digits = totp_digits()
-        token = str(totp(self.bin_key, digits=no_digits)).zfill(no_digits)
+        token = generate_challenge_token(self)
         tasks.send_email_task(self.user, token)
         message = "sent by email"
         return message

@@ -55,3 +55,25 @@ class UserRegistrationEmail(SendEmail):
         }
         super(UserRegistrationEmail, self).__init__(
             subject, [to], msg, template)
+
+
+class UserTokenEmail(SendEmail):
+    """
+        Specialized Class for sending tokens to user's email
+    """
+
+    def __init__(self, to, token, user_id):
+        subject = "2-Factor Code,  [{}]".format(
+            time.strftime("%d,%b %Y %H:%M"))
+        msg = subject
+        user = get_user_model().objects.get(pk=user_id)
+
+        template = {
+            "name": "two-factor-code",
+            "global_merge_vars": {
+                "FNAME": user.first_name,
+                "CODE": token
+            }
+        }
+        super(UserTokenEmail, self).__init__(
+            subject, [to], msg, template)
