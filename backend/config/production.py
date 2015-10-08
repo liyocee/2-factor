@@ -16,9 +16,6 @@ MEDIA_URL = os.getenv("MEDIA_URL")
 DEBUG = TEMPLATE_DEBUG = os.getenv("DEBUG", "false") == "true"
 DEBUG = True
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
-CLIENT_ORIGIN = os.getenv("CLIENT_ORIGIN")
-SESSION_COOKIE_DOMAIN = os.getenv("SESSION_COOKIE_DOMAIN")
-CSRF_COOKIE_DOMAIN = os.getenv("CSRF_COOKIE_DOMAIN")
 SWAGGER_SETTINGS = {
     'exclude_namespaces': SWAGGER_SETTINGS.get('exclude_namespaces'),
     'api_version': SWAGGER_SETTINGS.get('api_version'),
@@ -49,5 +46,6 @@ HUEY = {
         'host': os.getenv("REDIS_HOST"), 'port': os.getenv("REDIS_PORT")
     },
     'always_eager': False,
-    'consumer_options': {'workers': 4, 'logfile': TASKS_LOG_FILE},
+    'consumer_options': {'workers': 4},
 }
+API_DOMAIN = 'beyonic-api.healthix.co.ke'
