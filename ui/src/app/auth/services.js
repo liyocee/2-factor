@@ -68,17 +68,13 @@
             });
         };
 
-        var verifyEmail = function(token, userId, scope){
+        var verifyEmail = function(token, userId){
             var data = {
                 "token": token,
                 "user": userId
             };
-            scope.promise = api.all("user").all("verify_email").post(data);
-            scope.promise.then(function(data){
-                $state.go("login");
-            }, function(error){
-                console.log(error);
-            });
+            storage.store("2factor.user.credz", data);
+            return api.all("user").all("verify_email").post(data);
 
         };
         var logout = function(){

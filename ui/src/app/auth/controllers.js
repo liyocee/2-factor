@@ -18,21 +18,47 @@
     )
 
     .controller("2Factor.Login.Controller",
-        ["$scope","$stateParams", "2Factor.Auth.AuthService", "2Factor.Form.Login",
-        function ($scope,$stateParams, AuthService, Form) {
+        ["storageService","$scope","$stateParams", "2Factor.Auth.AuthService", "2Factor.Form.Login",
+        "2Factor.Notification", "verifyEmail",
+        function (storage,$scope,$stateParams, AuthService, Form, notification, verifyEmail) {
             var vm = this;
             vm.user = {};
             vm.userFields = Form.getForm();
+            if(verifyEmail.id && verifyEmail.token){
+                var data = verifyEmail;
+                vm.promise = AuthService.verifyEmail(data.token, data.id, $scope);
+                vm.promise.then(function(data){
+                    // $state.go("login");
+                }, function(error){
+                    $scope.alert = "Your email couldn't be verified";
+                    notification.error("Error", "Verification Failed");
+                    console.log(error);
+                });
+            }
             vm.login = function(user){
                 AuthService.login(
                     user.username, user.password, $scope);
+
             };
         }]
     )
     .controller("2Factor.VerifyEmail.Controller",
-        ["$scope","$stateParams", "2Factor.Auth.AuthService",
-        function ($scope,$stateParams, AuthService) {
-            AuthService.verifyEmail($stateParams.token, $stateParams.id, $scope);
+        ["$scope","$timeout", "2Factor.Auth.AuthService", "$state",
+        "2Factor.Notification", "verifyEmail",
+        function ($scope,$timeout, AuthService, $state, notification, verifyEmail) {
+            var vm = this;
+            var data = verifyEmail;
+            $timeout(function(){
+                vm.promise = AuthService.verifyEmail(data.token, data.id, $scope);
+                vm.promise.then(function(data){
+                    $state.go("login");
+                }, function(error){
+                    $scope.alert = "Your email couldn't be verified";
+                    notification.error("Error", "Verification Failed");
+                    console.log(error);
+                });
+            }, 5000);
+
         }]
     )
     .controller("2Factor.Token.Controller",

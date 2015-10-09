@@ -1,12 +1,21 @@
 (function(anglular){
     "use strict";
     angular.module("2factor.auth.routes", [
-        "2factor.auth.controllers"
+        "2factor.auth.controllers",
+        "2factor.auth.services"
     ])
     .config(function config($stateProvider) {
         $stateProvider
             .state("login", {
-                url: "/login",
+                url: "/login/:token/:id",
+                resolve: {
+                    verifyEmail: function($stateParams){
+                        return {
+                            id: $stateParams.id || null,
+                            token: $stateParams.token || null
+                        };
+                    }
+                },
                 views: {
                     "main-container": {
                         templateUrl: "auth/tpls/login.tpl.html",
@@ -22,11 +31,19 @@
                 data: {pageTitle: "Member Login"}
             })
             .state("verify_email", {
+                resolve: {
+                    verifyEmail: function($stateParams){
+                        return {
+                            id: $stateParams.id,
+                            token: $stateParams.token
+                        };
+                    }
+                },
                 url: "/verify_email/:token/:id",
                 views: {
                     "main-container": {
-                        controller: "2Factor.VerifyEmail.Controller as vm",
-                        templateUrl: "auth/tpls/verify_email.tpl.html"
+                        templateUrl: "auth/tpls/verify_email.tpl.html",
+                        controller: "2Factor.VerifyEmail.Controller as vm"
                     },
                     "error@verify_email": {
                         templateUrl: "common/tpls/error.tpl.html"
